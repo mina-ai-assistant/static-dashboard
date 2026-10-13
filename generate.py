@@ -158,13 +158,33 @@ def build_html(data: dict[str, Any]) -> str:
     <script defer src="https://code.iconify.design/3/3.1.1/iconify.min.js"></script>
     <style>
       :root {{
-        color-scheme: dark;
-        --bg-base: #070b12;
-        --bg-deep: #0b1020;
-        --bg-surface: rgba(12, 18, 28, 0.42);
-        --bg-surface-border: rgba(148, 163, 184, 0.14);
-        --bg-orb-violet: rgba(139, 92, 246, 0.20);
-        --bg-orb-fuchsia: rgba(236, 72, 153, 0.14);
+        color-scheme: light dark;
+        --bg-base: #f8fafc;
+        --bg-deep: #f1f5f9;
+        --bg-surface: rgba(255, 255, 255, 0.6);
+        --bg-surface-border: rgba(15, 23, 42, 0.08);
+        --bg-orb-violet: rgba(139, 92, 246, 0.15);
+        --bg-orb-fuchsia: rgba(236, 72, 153, 0.1);
+        --vignette-start: rgba(248, 250, 252, 0.08);
+        --vignette-end: rgba(248, 250, 252, 0.52);
+        --shadow-color: rgba(15, 23, 42, 0.08);
+        --tag-chip-bg: rgba(241, 245, 249, 0.7);
+        --tag-chip-border: rgba(139, 92, 246, 0.2);
+      }}
+      @media (prefers-color-scheme: dark) {{
+        :root {{
+          --bg-base: #070b12;
+          --bg-deep: #0b1020;
+          --bg-surface: rgba(12, 18, 28, 0.42);
+          --bg-surface-border: rgba(148, 163, 184, 0.14);
+          --bg-orb-violet: rgba(139, 92, 246, 0.20);
+          --bg-orb-fuchsia: rgba(236, 72, 153, 0.14);
+          --vignette-start: rgba(7, 11, 18, 0.08);
+          --vignette-end: rgba(7, 11, 18, 0.52);
+          --shadow-color: rgba(3, 7, 18, 0.28);
+          --tag-chip-bg: rgba(31, 41, 55, 0.55);
+          --tag-chip-border: rgba(139, 92, 246, 0.16);
+        }}
       }}
       body {{
         background:
@@ -189,7 +209,7 @@ def build_html(data: dict[str, Any]) -> str:
         position: fixed;
         inset: 0;
         background:
-          radial-gradient(circle at center, transparent 0%, rgba(7, 11, 18, 0.08) 52%, rgba(7, 11, 18, 0.52) 100%);
+          radial-gradient(circle at center, transparent 0%, var(--vignette-start) 52%, var(--vignette-end) 100%);
         pointer-events: none;
         content: "";
       }}
@@ -265,15 +285,15 @@ def build_html(data: dict[str, Any]) -> str:
         border: 1px solid var(--bg-surface-border);
         box-shadow:
           inset 0 1px 0 rgba(255, 255, 255, 0.05),
-          0 18px 60px rgba(3, 7, 18, 0.28);
+          0 18px 60px var(--shadow-color);
       }}
       .surface-soft {{
         background: transparent;
         border: 0;
       }}
       .tag-chip {{
-        background: rgba(31, 41, 55, 0.55);
-        border: 1px solid rgba(139, 92, 246, 0.16);
+        background: var(--tag-chip-bg);
+        border: 1px solid var(--tag-chip-border);
       }}
       .section-grid {{
         display: flex;
@@ -307,7 +327,7 @@ def build_html(data: dict[str, Any]) -> str:
       }}
     </style>
   </head>
-  <body class="min-h-screen text-slate-100 antialiased">
+  <body class="min-h-screen text-slate-800 dark:text-slate-100 antialiased">
     <div class="ambient" aria-hidden="true">
       <div class="ambient__aurora"></div>
       <div class="ambient__beam ambient__beam--secondary"></div>
@@ -321,29 +341,29 @@ def build_html(data: dict[str, Any]) -> str:
       class="mx-auto min-h-screen w-full px-4 py-8 sm:px-6 lg:px-8"
     >
       <header class="mx-auto max-w-3xl text-center">
-        <h1 class="text-2xl font-semibold tracking-tight text-white sm:text-3xl">Dashboard</h1>
-        <div class="mt-2 flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-xs text-slate-400">
-          <span><span class="text-cyan-300" x-text="totalItemCount"></span> bookmarks</span>
-          <span><span class="text-fuchsia-300" x-text="categoryCount"></span> categories</span>
+        <h1 class="text-2xl font-semibold tracking-tight text-slate-900 dark:text-white sm:text-3xl">Dashboard</h1>
+        <div class="mt-2 flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-xs text-slate-500 dark:text-slate-400">
+          <span><span class="text-cyan-600 dark:text-cyan-300" x-text="totalItemCount"></span> bookmarks</span>
+          <span><span class="text-fuchsia-600 dark:text-fuchsia-300" x-text="categoryCount"></span> categories</span>
           <template x-if="query">
-            <span><span class="text-violet-300" x-text="visibleItemCount"></span> shown</span>
+            <span><span class="text-violet-600 dark:text-violet-300" x-text="visibleItemCount"></span> shown</span>
           </template>
         </div>
       </header>
 
       <section class="mx-auto mt-8 max-w-2xl">
-        <label class="flex items-center gap-3 border-b border-slate-800 px-4 py-3 transition focus-within:border-fuchsia-500/70">
-          <span class="iconify text-lg text-fuchsia-400/80" data-icon="lucide:search"></span>
+        <label class="flex items-center gap-3 border-b border-slate-300 dark:border-slate-800 px-4 py-3 transition focus-within:border-fuchsia-500/70 dark:focus-within:border-fuchsia-500/70">
+          <span class="iconify text-lg text-fuchsia-600/80 dark:text-fuchsia-400/80" data-icon="lucide:search"></span>
           <input
             x-ref="search"
             x-model="query"
             type="search"
             placeholder="Search"
-            class="w-full border-0 bg-transparent text-sm text-white placeholder:text-slate-500 focus:outline-none focus:ring-0 sm:text-base"
+            class="w-full border-0 bg-transparent text-sm text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:ring-0 sm:text-base"
             autocomplete="off"
             spellcheck="false"
           >
-          <kbd class="hidden rounded-md border border-violet-500/20 bg-slate-900/80 px-2 py-1 text-xs text-slate-500 sm:block">/</kbd>
+          <kbd class="hidden rounded-md border border-violet-500/20 bg-slate-100 dark:bg-slate-900/80 px-2 py-1 text-xs text-slate-400 dark:text-slate-500 sm:block">/</kbd>
         </label>
       </section>
 
@@ -355,10 +375,10 @@ def build_html(data: dict[str, Any]) -> str:
                 <section class="surface category-card rounded-2xl px-5 py-4">
                   <div class="mb-4 flex items-center justify-between gap-3 border-b border-violet-500/10 pb-3">
                     <div class="flex min-w-0 items-center gap-3">
-                      <span class="iconify shrink-0 text-base text-fuchsia-400/80" :data-icon="category.icon"></span>
-                      <h2 class="truncate text-sm font-medium text-slate-200" x-text="category.name"></h2>
+                      <span class="iconify shrink-0 text-base text-fuchsia-600/80 dark:text-fuchsia-400/80" :data-icon="category.icon"></span>
+                      <h2 class="truncate text-sm font-medium text-slate-800 dark:text-slate-200" x-text="category.name"></h2>
                     </div>
-                    <span class="text-[11px] text-slate-600" x-text="category.items.length"></span>
+                    <span class="text-[11px] text-slate-500 dark:text-slate-600" x-text="category.items.length"></span>
                   </div>
                   <div class="bookmark-list">
                     <template x-for="item in category.items" :key="item.url">
@@ -368,18 +388,18 @@ def build_html(data: dict[str, Any]) -> str:
                         rel="noreferrer noopener"
                         class="group box-border flex w-full min-w-0 items-start gap-4 rounded-xl px-3 py-3 transition hover:bg-fuchsia-500/[0.05]"
                       >
-                        <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-slate-900/85 text-cyan-300/80 transition group-hover:text-cyan-200">
+                        <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-slate-100 dark:bg-slate-900/85 text-cyan-600 dark:text-cyan-300/80 transition group-hover:text-cyan-700 dark:group-hover:text-cyan-200">
                           <span class="iconify text-xl" :data-icon="item.icon"></span>
                         </div>
                         <div class="min-w-0 flex-1">
                           <div class="flex items-center gap-2">
-                            <h3 class="truncate text-sm font-medium text-white" x-text="item.name"></h3>
-                            <span class="iconify shrink-0 text-slate-700 transition group-hover:text-fuchsia-300" data-icon="lucide:arrow-up-right"></span>
+                            <h3 class="truncate text-sm font-medium text-slate-900 dark:text-white" x-text="item.name"></h3>
+                            <span class="iconify shrink-0 text-slate-400 dark:text-slate-700 transition group-hover:text-fuchsia-600 dark:group-hover:text-fuchsia-300" data-icon="lucide:arrow-up-right"></span>
                           </div>
                           <p class="mt-1 max-w-[34ch] truncate text-xs text-slate-500" x-text="item.url"></p>
                           <div class="mt-2 flex flex-wrap gap-2" x-show="item.tags.length">
                             <template x-for="tag in item.tags" :key="tag">
-                              <span class="tag-chip inline-block rounded px-1.5 py-0.5 text-[9px] uppercase tracking-wide text-slate-300" x-text="tag"></span>
+                              <span class="tag-chip inline-block rounded px-1.5 py-0.5 text-[9px] uppercase tracking-wide text-slate-600 dark:text-slate-300" x-text="tag"></span>
                             </template>
                           </div>
                         </div>
@@ -398,10 +418,10 @@ def build_html(data: dict[str, Any]) -> str:
         x-cloak
         class="mx-auto mt-14 max-w-2xl text-center"
       >
-        <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-lg bg-slate-900/80 text-slate-500">
+        <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-lg bg-slate-100 dark:bg-slate-900/80 text-slate-500">
           <span class="iconify text-2xl" data-icon="lucide:search-x"></span>
         </div>
-        <h2 class="mt-4 text-lg font-medium text-white">No matches</h2>
+        <h2 class="mt-4 text-lg font-medium text-slate-900 dark:text-white">No matches</h2>
         <p class="mt-2 text-sm text-slate-500">Try another search term.</p>
       </section>
 
